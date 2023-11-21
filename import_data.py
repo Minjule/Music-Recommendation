@@ -21,17 +21,17 @@ def create_spectrogram(verbose=0, mode=None):
         if os.path.exists('Train_Spectogram_Images'):
             return
         # Get Genres and Track IDs from the tracks.csv file
-        filename_metadata = "D:\\projects\\Music-Reccomendation-Dataset\\fma_metadata\\tracks.csv"
+        filename_metadata = "D:/projects/Music-Reccomendation-Dataset/fma_metadata/tracks.csv"
         tracks = pd.read_csv(filename_metadata, header=2, low_memory=False)
         tracks_array = tracks.values
         tracks_id_array = tracks_array[: , 0]
+        print(tracks_id_array)
         tracks_genre_array = tracks_array[: , 40]
         tracks_id_array = tracks_id_array.reshape(tracks_id_array.shape[0], 1)
         tracks_genre_array = tracks_genre_array.reshape(tracks_genre_array.shape[0], 1)
 
-        folder_sample = "D:\\projects\\Music-Reccomendation-Dataset\\fma_small"
-        directories = [d for d in os.listdir(folder_sample)
-                       if os.path.isdir(os.path.join(folder_sample, d))]
+        folder_sample = "D:/projects/Music-Reccomendation-Dataset/fma_small"
+        directories = [d for d in os.listdir(folder_sample) if os.path.isdir(os.path.join(folder_sample, d))]
         counter = 0
         if(verbose > 0):
             print("Converting mp3 audio files into mel Spectograms ...")
@@ -39,14 +39,20 @@ def create_spectrogram(verbose=0, mode=None):
             os.makedirs('Train_Spectogram_Images')
         for d in directories:
             label_directory = os.path.join(folder_sample, d)
-            file_names = [os.path.join(label_directory, f)
-                          for f in os.listdir(label_directory)
-                          if f.endswith(".mp3")]
+            file_names = [os.path.join(label_directory, f) for f in os.listdir(label_directory) if f.endswith(".mp3")]
 
             # Convert .mp3 files into mel-Spectograms
             for f in file_names:
-                track_id = int(re.search('fma_small/.*/(.+?).mp3', f).group(1))
-                track_index = list(tracks_id_array).index(str(track_id))
+                print(f)
+
+                track_id = re.search(r'.{10}$', f).group(0)
+                print(track_id)
+                track_id = track_id[:6]
+                print(track_id)
+                track_id = re.sub(r'^0+', '', track_id)
+                print(track_id)
+
+                track_index = list(tracks_id_array).index(int(track_id))
                 if(str(tracks_genre_array[track_index, 0]) != '0'):
                     print(f)
                     y, sr = librosa.load(f)

@@ -3,7 +3,7 @@ import re
 import numpy as np
 import cv2
 from import_data import create_spectrogram
-from slice_spectrogram import slice_spect
+from slice_spectogram import slice_spect
 from keras.utils import np_utils
 from sklearn.model_selection import train_test_split
 
@@ -17,7 +17,7 @@ def load_dataset(verbose=0, mode=None, datasetSize=1.0):
     # datasetSize is a float value which returns a fraction of the dataset.
     # If set as 1.0 it returns the entire dataset.
     # If set as 0.5 it returns half the dataset.
-
+    
     if mode=="Train":
         genre = {
         "Hip-Hop": 0,
@@ -62,7 +62,7 @@ def load_dataset(verbose=0, mode=None, datasetSize=1.0):
         images = np.array(images)
         labels = np.array(labels)
         labels = labels.reshape(labels.shape[0],1)
-        train_x, test_x, train_y, test_y = train_test_split(images, labels, test_size=0.05, shuffle=True)
+        train_x, test_x, train_y, test_y = train_test_split(images, labels, test_size=0.2, shuffle=True, random_state=13)
 
         # Convert the labels into one-hot vectors.
         train_y = np_utils.to_categorical(train_y)
