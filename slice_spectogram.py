@@ -20,15 +20,19 @@ def slice_spect(verbose=0, mode=None):
         if not os.path.exists('Train_Sliced_Images'):
             os.makedirs('Train_Sliced_Images')
         for f in filenames:
-            genre_variable = re.search('Train_Spectogram_Images/.*_(.+?).jpg', f).group(1)
+            print(f)
+            genre_variable = re.search(r'.{27}$', f).group(0)
+            print(genre_variable)
+            genre_variable = re.findall(r'\d+', f)
+            print(genre_variable[0])
             img = Image.open(f)
             subsample_size = 128
             width, height = img.size
             number_of_samples = width / subsample_size
-            for i in range(number_of_samples):
+            for i in range(int(number_of_samples)):
                 start = i*subsample_size
                 img_temporary = img.crop((start, 0., start + subsample_size, subsample_size))
-                img_temporary.save("Train_Sliced_Images/"+str(counter)+"_"+genre_variable+".jpg")
+                img_temporary.save("Train_Sliced_Images/"+str(counter)+"_"+str(genre_variable[0])+".jpg")
                 counter = counter + 1
         return
 
