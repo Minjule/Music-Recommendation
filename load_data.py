@@ -31,16 +31,28 @@ def load_dataset(verbose=0, mode=None, datasetSize=1.0):
         }
         if(verbose > 0):
             print("Compiling Training and Testing Sets ...")
-        filenames = [os.path.join("Train_Sliced_Images", f) for f in os.listdir("Train_Sliced_Images")
+            
+        n_classes = len(genre)
+        genre_new = {value: key for key, value in genre.items()}
+        if os.path.exists('Training_Data'):
+            train_x = np.load("Training_Data/train_x.npy")
+            train_y = np.load("Training_Data/train_y.npy")
+            test_x = np.load("Training_Data/test_x.npy")
+            test_y = np.load("Training_Data/test_y.npy")
+            return train_x, train_y, test_x, test_y, n_classes, genre_new
+
+        filenames = [os.path.join("TrainSlicedImages", f) for f in os.listdir("TrainSlicedImages")
                        if f.endswith(".jpg")]
         images_all = [None]*(len(filenames))
         labels_all = [None]*(len(filenames))
         for f in filenames:
-            index = int(re.search('Train_Sliced_Images/(.+?)_.*.jpg', f).group(1))
-            genre_variable = re.search('Train_Sliced_Images/.*_(.+?).jpg', f).group(1)
+            index = re.findall(r'\d+', f)
+            print(index[0])
+            genre_variable = re.search('(?<=_)(.+?)(?=\.jpg)', f).group(0)
+            print(genre_variable)
             temp = cv2.imread(f, cv2.IMREAD_UNCHANGED)
-            images_all[index] = cv2.cvtColor(temp, cv2.COLOR_BGR2GRAY)
-            labels_all[index] = genre[genre_variable]
+            images_all[int(index[0])] = cv2.cvtColor(temp, cv2.COLOR_BGR2GRAY)
+            labels_all[int(index[0])] = genre[genre_variable]
 
         if(datasetSize == 1.0):
             images = images_all

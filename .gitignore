@@ -1,2 +1,4 @@
-/Train_Spectogram_Images/
-/Train_Sliced_Images/
+/TrainSpectogramImages/
+/TrainSlicedImages/
+/Training_Data/
+/Saved_Model/Model.h5

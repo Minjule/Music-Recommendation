@@ -8,23 +8,21 @@ Convolutional Neural Network.
 """
 def slice_spect(verbose=0, mode=None):
     if mode=="Train":
-        if os.path.exists('Train_Sliced_Images'):
+        if os.path.exists('TrainSlicedImages'):
             return
         labels = []
-        image_folder = "Train_Spectogram_Images"
+        image_folder = "TrainSpectogramImages"
         filenames = [os.path.join(image_folder, f) for f in os.listdir(image_folder)
                        if f.endswith(".jpg")]
         counter = 0
         if(verbose > 0):
             print("Slicing Spectograms ...")
-        if not os.path.exists('Train_Sliced_Images'):
-            os.makedirs('Train_Sliced_Images')
+        if not os.path.exists('TrainSlicedImages'):
+            os.makedirs('TrainSlicedImages')
         for f in filenames:
             print(f)
-            genre_variable = re.search(r'.{27}$', f).group(0)
+            genre_variable = re.search('(?<=_)(.+?)(?=\.jpg)', f).group(0)
             print(genre_variable)
-            genre_variable = re.findall(r'\d+', f)
-            print(genre_variable[0])
             img = Image.open(f)
             subsample_size = 128
             width, height = img.size
@@ -32,7 +30,7 @@ def slice_spect(verbose=0, mode=None):
             for i in range(int(number_of_samples)):
                 start = i*subsample_size
                 img_temporary = img.crop((start, 0., start + subsample_size, subsample_size))
-                img_temporary.save("Train_Sliced_Images/"+str(counter)+"_"+str(genre_variable[0])+".jpg")
+                img_temporary.save("TrainSlicedImages/"+str(counter)+"_"+ genre_variable +".jpg")
                 counter = counter + 1
         return
 

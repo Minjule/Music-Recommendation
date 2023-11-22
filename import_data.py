@@ -18,7 +18,7 @@ These successive frames are then concatenated into a matrix to form the spectrog
 """
 def create_spectrogram(verbose=0, mode=None):
     if mode == "Train":
-        if os.path.exists('Train_Spectogram_Images'):
+        if os.path.exists('TrainSpectogramImages'):
             return
         # Get Genres and Track IDs from the tracks.csv file
         filename_metadata = "D:/projects/Music-Reccomendation-Dataset/fma_metadata/tracks.csv"
@@ -35,8 +35,8 @@ def create_spectrogram(verbose=0, mode=None):
         counter = 6963
         if(verbose > 0):
             print("Converting mp3 audio files into mel Spectograms ...")
-        if not os.path.exists('Train_Spectogram_Images'):
-           os.makedirs('Train_Spectogram_Images')
+        if not os.path.exists('TrainSpectogramImages'):
+           os.makedirs('TrainSpectogramImages')
         for d in directories:
             label_directory = os.path.join(folder_sample, d)
             file_names = [os.path.join(label_directory, f) for f in os.listdir(label_directory) if f.endswith(".mp3")]
@@ -72,7 +72,7 @@ def create_spectrogram(verbose=0, mode=None):
                         plt.axis('off')
                         plt.axes([0., 0., 1., 1.0], frameon=False, xticks=[], yticks=[])
                         librosa.display.specshow(mel, cmap='gray_r')
-                        plt.savefig("Train_Spectogram_Images/"+str(counter)+"_"+str(tracks_genre_array[track_index,0])+".jpg", bbox_inches=None, pad_inches=0)
+                        plt.savefig("TrainSpectogramImages/"+str(counter)+"_"+str(tracks_genre_array[track_index,0])+".jpg", bbox_inches=None, pad_inches=0)
                         plt.close()
                         counter = counter + 1
         return
