@@ -31,7 +31,7 @@ def load_dataset(verbose=0, mode=None, datasetSize=1.0):
         }
         if(verbose > 0):
             print("Compiling Training and Testing Sets ...")
-            
+
         n_classes = len(genre)
         genre_new = {value: key for key, value in genre.items()}
         if os.path.exists('Training_Data'):
@@ -105,7 +105,8 @@ def load_dataset(verbose=0, mode=None, datasetSize=1.0):
         images = []
         labels = []
         for f in filenames:
-            song_variable = re.search('Test_Sliced_Images/.*_(.+?).jpg', f).group(1)
+            song_variable = f[-7:-4]
+            print(song_variable)
             tempImg = cv2.imread(f, cv2.IMREAD_UNCHANGED)
             images.append(cv2.cvtColor(tempImg, cv2.COLOR_BGR2GRAY))
             labels.append(song_variable)
